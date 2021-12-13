@@ -7,7 +7,7 @@
     "host": "127.0.0.1",
     "dialect": "mysql",
     "operatorsAliases": false,
-    "mongodbUrl": "mongodb://localhost:27017"
+    "mongodbUrl": "mongodb+srv://root:123@cluster0.5kij3.mongodb.net"
   },
   "test": {
     "username": "root",
@@ -17,7 +17,7 @@
     "host": "127.0.0.1",
     "dialect": "mysql",
     "operatorsAliases": false,
-    "mongodbUrl": "mongodb://localhost:27017"
+    "mongodbUrl": "mongodb+srv://root:123@cluster0.5kij3.mongodb.net"
   },
   "production": {
     "username": "root",
@@ -27,6 +27,6 @@
     "host": "blue-admin-db.c1a6w2oic6de.us-east-1.rds.amazonaws.com",
     "dialect": "mysql",
     "operatorsAliases": false,
-    "mongodbUrl": "mongodb://localhost:27017"
+    "mongodbUrl": "mongodb+srv://root:123@cluster0.5kij3.mongodb.net"
   }
 }
