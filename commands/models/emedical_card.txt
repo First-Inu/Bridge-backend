@@ -1,0 +1,1 @@
+npx sequelize-cli model:generate --name EmedicalCard --attributes user_id:integer,membership_id:integer,start_date:date,end_date:date,card_image_name:string,email_sent:boolean
