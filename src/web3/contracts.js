@@ -10,10 +10,10 @@ const privateKeys = []
 privateKeys.push(process.env.PRIVATE_KEY)
 const infuraProjectId = process.env.INFURA_PROJECT_ID
 
-const provider = new Web3.providers.HttpProvider(`https://rinkeby.infura.io/v3/${infuraProjectId}`)
+const provider = new Web3.providers.HttpProvider(`${process.env.RINKEBY_CHAIN}${infuraProjectId}`)
 const web3 = new Web3(provider)
 
-const bnbWeb3 = new Web3('https://data-seed-prebsc-1-s1.binance.org:8545/')
+const bnbWeb3 = new Web3(process.env.TEST_SMART_CHAIN)
 
 var finuContract = null
 var tokenContract = null
@@ -21,52 +21,16 @@ var smartContract = null
 var account = null
 var bnbAccount = null
 
-async function testAccount() {
+async function initContracts() {
   bnbAccount = await bnbWeb3.eth.accounts.privateKeyToAccount(privateKeys[0])
   account = await web3.eth.accounts.privateKeyToAccount(privateKeys[0])
 
   finuContract = new web3.eth.Contract(ercAbi, TokenAddress.TOKEN_ADDRESS)
   tokenContract = new web3.eth.Contract(contractAbi, TokenAddress.CONTRACT_ADDRESSS)
   smartContract = new bnbWeb3.eth.Contract(bnbAbi, TokenAddress.SMARTCHAIN_ADDRESS)
-
-  const contract = new web3.eth.Contract(
-    contractAbi,
-    TokenAddress.CONTRACT_ADDRESSS
-  );
-
-  const mint = contract.methods.lockToken('10000000000');
-  const encodedABI = mint.encodeABI();
-
-  const mintTx = {
-    from: account.address,
-    to: TokenAddress.CONTRACT_ADDRESSS,
-    gas: 2000000,
-    data: encodedABI
-  };
-  console.log(account.address, '------acount address')
-  web3.eth.accounts.signTransaction(mintTx, privateKeys[0]).then(signed => {
-    var tran = web3.eth.sendSignedTransaction(signed.rawTransaction);
-
-    tran.on('confirmation', (confirmationNumber, receipt) => {
-      console.log('confirmation: ' + confirmationNumber);
-
-    });
-
-    tran.on('transactionHash', hash => {
-      console.log('hash');
-      console.log(hash);
-    });
-
-    tran.on('receipt', receipt => {
-      console.log('reciept');
-      console.log(receipt);
-    });
-
-    tran.on('error -------', console.error);
-  });
 }
 
-testAccount()
+initContracts()
 
 async function setAllowance(swapId, amount) {
   try {
@@ -79,13 +43,11 @@ async function setAllowance(swapId, amount) {
     const methodTx = {
       from: account.address,
       to: TokenAddress.SMARTCHAIN_ADDRESS,
-      gas: 2000000,
+      // gas: 2000000,
       data: encodedABI
     };
 
     const responseToSign = bnbWeb3.eth.accounts.signTransaction(methodTx, privateKeys[0])
-
-    console.log(responseToSign, '-----responseToSign')
 
     const tran = bnbWeb3.eth.sendSignedTransaction(responseToSign.rawTransaction);
 
@@ -126,8 +88,6 @@ async function setIdentifier(swapId, identifier) {
     };
 
     const responseToSign = bnbWeb3.eth.accounts.signTransaction(methodTx, privateKeys[0])
-
-    console.log(responseToSign, '-----responseToSign')
 
     const tran = bnbWeb3.eth.sendSignedTransaction(responseToSign.rawTransaction);
 
