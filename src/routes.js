@@ -17,7 +17,8 @@ router.get('/test', (req, res) => {
 });
 
 router.post('/add_claim', claimCtrol.add_claim)
-router.get('/check_claim', claimCtrol.check_claim)
+router.post('/confirm_claim', claimCtrol.confirm)
+router.post('/claims', claimCtrol.claims)
 
 // //AdminUser
 // router.post('/signin', adminUserCtrl.signin);
