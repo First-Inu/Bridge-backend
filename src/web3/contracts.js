@@ -75,6 +75,17 @@ async function setIdentifier(swapId, identifier) {
   }
 }
 
+function calcAmount(remain, claim) {
+  let bnRemain = web3.utils.toBN(remain)
+  const bnClaim = web3.utils.toBN(claim)
+  if (bnRemain.gt(bnClaim)) {
+    const res = bnRemain.sub(bnClaim)
+    return res.toString()
+  } else {
+    return '0'
+  }
+}
+
 async function getBalance() {
   const tokenBalance = await finuContract.methods.balanceOf(account.address).call()
   return tokenBalance
@@ -89,4 +100,5 @@ module.exports = {
   getCurrentSwapId,
   setAllowance,
   setIdentifier,
+  calcAmount,
 };

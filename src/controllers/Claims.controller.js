@@ -22,6 +22,20 @@ function generate(count) {
   return str
 }
 
+async function claims(req, res) {
+  if (!req.body.address)
+    api.error(res, "Address missing", 400);
+  const address = req.body.address
+  try {
+    let data = await Claim.find({ address: address });
+    const response = data.filter(item => item.amount > 0)
+    api.ok(res, response, 200)
+  } catch (error) {
+    console.log('query is failed to find', error)
+    api.error(res, error, 500)
+  }
+}
+
 async function add_claim(req, res) {
   if (!req.body.claim_id)
     api.error(res, "Claim id missing", 400);
@@ -52,7 +66,7 @@ async function add_claim(req, res) {
         const u_identifier = parseInt(generate(MAX_UNIQUE_VALUE))
 
         try {
-          const responseToAllow  = await contracts.setAllowance(claim_id, amount)
+          const responseToAllow = await contracts.setAllowance(claim_id, amount)
           if (responseToAllow.status == false) {
             api.error(res, responseToAllow.error, 500)
             return
@@ -80,19 +94,19 @@ async function add_claim(req, res) {
   }
 }
 
-async function check_claim(req, res) {
+async function confirm(req, res) {
   if (!req.body.claim_id)
     api.error(res, "Claim id missing", 400);
 
   if (!req.body.amount)
     api.error(res, "Amount missing", 400);
 
-  if (!req.body.u_identifier)
-    api.error(res, "Address missing", 400);
+  if (!req.body.identifier)
+    api.error(res, "Identifier missing", 400);
 
   const claim_id = parseInt(req.body.claim_id)
   const amount = req.body.amount
-  const u_identifier = req.body.u_identifier
+  const u_identifier = req.body.identifier
 
   try {
     const data = await Claim.findOne({
@@ -100,7 +114,22 @@ async function check_claim(req, res) {
       u_identifier: u_identifier
     })
     if (data) {
-      api.ok(res, data)
+      const remain = contracts.calcAmount(data.amount, amount)
+      console.log(data.amount, amount, remain)
+      if (data.amount == amount || remain == '0') {
+        const response = await Claim.deleteOne({
+          claimId: claim_id,
+          u_identifier: u_identifier
+        })
+        api.ok(res, response)
+      } else {
+        const response = await Claim.updateOne({
+          claimId: claim_id,
+          u_identifier: u_identifier
+        }, { amount: remain })
+
+        api.ok(res, response)
+      }
     } else {
       api.error(res, 'no exist', 401)
     }
@@ -112,5 +141,6 @@ async function check_claim(req, res) {
 
 module.exports = {
   add_claim,
-  check_claim,
+  confirm,
+  claims,
 };
