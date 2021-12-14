@@ -1,13 +1,13 @@
 module.exports = {
   server: {
     "development": {
-      port: 80
+      port: 3000
     },
     "test": {
-      port: 80
+      port: 3000
     },
     "production": {
-      port: 80
+      port: 3000
     }
   },
   security: {
