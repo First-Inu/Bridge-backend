@@ -12,7 +12,6 @@
     "deploy": "sudo pm2 kill && npm run build && sudo NODE_ENV=production pm2 start ./build/server.js"
   },
   "dependencies": {
-    "@truffle/hdwallet-provider": "^2.0.0",
     "adm-zip": "^0.4.13",
     "async": "^3.1.0",
     "aws-sdk": "^2.771.0",
@@ -60,7 +59,6 @@
     "sinon": "^6.1.5",
     "socket.io": "^2.3.0",
     "stripe": "^7.14.0",
-    "truffle-hdwallet-provider-privkey": "^0.3.0",
     "uuid": "^8.3.2",
     "web3": "^1.6.1"
   },
