@@ -12,7 +12,7 @@ import http from "http";
  */
 
 const env = process.env.NODE_ENV || 'development';
-var port = config.server[env].port;
+var port = config.server[env].port || process.env.port;
 app.set("port", port);
 
 /**
