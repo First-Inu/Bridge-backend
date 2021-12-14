@@ -28,7 +28,7 @@ async function claims(req, res) {
   const address = req.body.address
   try {
     let data = await Claim.find({ address: address });
-    const response = data.filter(item => item.amount > 0)
+    const response = data.filter(item => item.amount != '0')
     api.ok(res, response, 200)
   } catch (error) {
     console.log('query is failed to find', error)
