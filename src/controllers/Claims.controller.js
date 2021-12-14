@@ -17,11 +17,7 @@ function generate(count) {
   }
   if (str[0] == '0')
     return generate(count)
-  // base.getID(str, function(err, res) {
-  //   if(!res.length) {
-  //     k(str)                   // use the continuation
-  //   } else generate(count, k)  // otherwise, recurse on generate
-  // });
+
   return str
 }
 
@@ -48,7 +44,7 @@ async function add_claim(req, res) {
       api.error(res, "Claim ID already used", 400);
     } else {
       const currentSwapId = await contracts.getCurrentSwapId()
-      console.log(currentSwapId, '-----current swap id')
+
       if (currentSwapId <= claim_id) {
         api.error(res, "Claim ID incorrect", 400)
       } else {
@@ -71,8 +67,7 @@ async function add_claim(req, res) {
       }
     }
   } catch (error) {
-    console.log(error)
-    api.error(res, "Claim id failed", 400);
+    api.error(res, error, 400);
   }
 }
 

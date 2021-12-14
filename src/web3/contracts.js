@@ -10,10 +10,11 @@ const privateKeys = []
 privateKeys.push(process.env.PRIVATE_KEY)
 const infuraProjectId = process.env.INFURA_PROJECT_ID
 
-const provider = new Web3.providers.HttpProvider(`${process.env.RINKEBY_CHAIN}${infuraProjectId}`)
+const provider = new Web3.providers.HttpProvider(`${process.env.CHAIN_NETWORK}${infuraProjectId}`)
+
 const web3 = new Web3(provider)
 
-const bnbWeb3 = new Web3(process.env.TEST_SMART_CHAIN)
+const bnbWeb3 = new Web3(process.env.SMART_NETWORK)
 
 var finuContract = null
 var tokenContract = null
@@ -34,44 +35,22 @@ initContracts()
 
 async function setAllowance(swapId, amount) {
   try {
-    const tokenAmount = bnbWeb3.utils.fromWei(amount, 'kwei')
-    // const response = await smartContract.methods.setAllowance(swapId, tokenAmount).send({ from: bnbAccount.address })
-
-    const method = smartContract.methods.setAllowance(swapId, tokenAmount);
+    const method = smartContract.methods.setAllowance(swapId, amount);
     const encodedABI = method.encodeABI();
 
     const methodTx = {
-      from: account.address,
       to: TokenAddress.SMARTCHAIN_ADDRESS,
-      // gas: 2000000,
+      gas: '0x20000',
       data: encodedABI
     };
 
-    const responseToSign = bnbWeb3.eth.accounts.signTransaction(methodTx, privateKeys[0])
+    const responseToSign = await bnbWeb3.eth.accounts.signTransaction(methodTx, privateKeys[0])
 
-    const tran = bnbWeb3.eth.sendSignedTransaction(responseToSign.rawTransaction);
+    const responseToTransact = bnbWeb3.eth.sendSignedTransaction(responseToSign.rawTransaction);
 
-    tran.on('confirmation', (confirmationNumber, receipt) => {
-      console.log('confirmation: ' + confirmationNumber);
-
-    });
-
-    tran.on('transactionHash', hash => {
-      console.log('hash');
-      console.log(hash);
-    });
-
-    tran.on('receipt', receipt => {
-      console.log('reciept');
-      console.log(receipt);
-    });
-
-    tran.on('error', console.error);
-
-    return tran
+    return responseToTransact
   } catch (error) {
-    console.log(error)
-    return error
+    return { status: false, error: error }
   }
 }
 
@@ -81,37 +60,18 @@ async function setIdentifier(swapId, identifier) {
     const encodedABI = method.encodeABI();
 
     const methodTx = {
-      from: account.address,
       to: TokenAddress.SMARTCHAIN_ADDRESS,
-      gas: 2000000,
+      gas: '0x20000',
       data: encodedABI
     };
 
-    const responseToSign = bnbWeb3.eth.accounts.signTransaction(methodTx, privateKeys[0])
+    const responseToSign = await bnbWeb3.eth.accounts.signTransaction(methodTx, privateKeys[0])
 
-    const tran = bnbWeb3.eth.sendSignedTransaction(responseToSign.rawTransaction);
+    const responseToTransact = await bnbWeb3.eth.sendSignedTransaction(responseToSign.rawTransaction);
 
-    tran.on('confirmation', (confirmationNumber, receipt) => {
-      console.log('confirmation: ' + confirmationNumber);
-
-    });
-
-    tran.on('transactionHash', hash => {
-      console.log('hash');
-      console.log(hash);
-    });
-
-    tran.on('receipt', receipt => {
-      console.log('reciept');
-      console.log(receipt);
-    });
-
-    tran.on('error', console.error);
-
-    return tran
+    return responseToTransact
   } catch (error) {
-    console.log(error)
-    return error
+    return { status: false, error: error }
   }
 }
 
