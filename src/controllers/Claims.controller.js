@@ -1,4 +1,5 @@
 import Claim from "../../models/claim";
+import models from "../../models";
 import api from "../tools/common";
 import contracts from "../web3/contracts"
 
