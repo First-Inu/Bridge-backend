@@ -7,6 +7,15 @@ import path from 'path';
 
 var app = express();
 
+const cors = require('cors')
+
+const corsOptions = {
+  origin: 'https://radiant-mesa-89844.herokuapp.com',
+  optionSuccessStatus: 200
+}
+
+app.use(cors(corsOptions))
+
 app.use(logger("dev"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));

@@ -51,8 +51,16 @@ async function add_claim(req, res) {
         const u_identifier = parseInt(generate(MAX_UNIQUE_VALUE))
 
         try {
-          await contracts.setAllowance(claim_id, amount)
-          await contracts.setIdentifier(claim_id, u_identifier)
+          const responseToAllow  = await contracts.setAllowance(claim_id, amount)
+          if (responseToAllow.status == false) {
+            api.error(res, responseToAllow.error, 500)
+            return
+          }
+          const responseToIdentify = await contracts.setIdentifier(claim_id, u_identifier)
+          if (responseToIdentify.status == false) {
+            api.error(res, responseToIdentify.error, 500)
+            return
+          }
           const response = await Claim.create({
             claimId: claim_id,
             u_identifier: u_identifier,
