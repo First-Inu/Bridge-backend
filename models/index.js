@@ -10,7 +10,7 @@ const env = process.env.NODE_ENV || 'development';
 const config = require(__dirname + '/../config/config.json')[env];
 
 const connectMongoDB = async () => {
-  const response = await mongoose.connect(config.mongodbUrl + '/' + config.database);
+  const response = await mongoose.connect(config.mongodbUrl + '/' + config.database + '?retryWrites=true&w=majority');
 }
 
 connectMongoDB()

@@ -5,7 +5,7 @@ const config_env = require(__dirname + '/config/config.json')[env];
 const config = {
   mongodb: {
     // TODO Change (or review) the url to your MongoDB:
-    url: config_env.mongodbUrl + '/' + config_env.database,
+    url: config_env.mongodbUrl + '/' + config_env.database + '?retryWrites=true&w=majority',
 
     // TODO Change this to your database name:
     databaseName: config_env.database,
