@@ -7,8 +7,8 @@
     "host": "127.0.0.1",
     "dialect": "mysql",
     "operatorsAliases": false,
-    "mongodbUrl": "mongodb://localhost:27017"
- },
+    "mongodbUrl": "mongodb+srv://root:123@cluster0.5kij3.mongodb.net"
+  },
   "test": {
     "username": "root",
     "password": null,
