@@ -9,7 +9,7 @@ require('dotenv').config()
 const privateKeys = []
 privateKeys.push(process.env.PRIVATE_KEY)
 const infuraProjectId = process.env.INFURA_PROJECT_ID
-
+console.log(infuraProjectId,'----infura')
 const provider = new Web3.providers.HttpProvider(`${process.env.CHAIN_NETWORK}${infuraProjectId}`)
 
 const web3 = new Web3(provider)
