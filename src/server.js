@@ -12,8 +12,8 @@ import http from "http";
  */
 
 const env = process.env.NODE_ENV || 'development';
-var port = process.env.port || config.server[env].port;
-console.log(process.env.port, process.env, '----')
+var port = process.env.PORT || config.server[env].port;
+console.log(process.env.PORT, process.env, '----')
 app.set("port", port);
 
 /**
