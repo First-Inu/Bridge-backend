@@ -12,9 +12,9 @@ import http from "http";
  */
 
 const env = process.env.NODE_ENV || 'development';
-var port = config.server[env].port;
-console.log(process.env.port, '----')
-app.set("port", process.env.port);
+var port = config.server[env].port || process.env.port;
+console.log(process.env.port, process.env, '----')
+app.set("port", port);
 
 /**
  * Create HTTP server.
@@ -26,7 +26,7 @@ var server = http.createServer(app);
  * Listen on provided port, on all network interfaces.
  */
 
-server.listen(process.env.port);
+server.listen(port);
 server.on("error", onError);
 server.on("listening", onListening);
 
