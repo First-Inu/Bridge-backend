@@ -10,7 +10,7 @@ var app = express();
 const cors = require('cors')
 
 const corsOptions = {
-  origin: 'https://radiant-mesa-89844.herokuapp.com',
+  origin: 'https://finu-bridge.herokuapp.com',
   optionSuccessStatus: 200
 }
 
