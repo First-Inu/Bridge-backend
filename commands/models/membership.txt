@@ -1,1 +1,0 @@
-npx sequelize-cli model:generate --name Membership --attributes plan:string
